@@ -1,0 +1,6 @@
+{
+  "db": {
+    "driver": "mysql",
+    "dsn": "stdk_user:stdk_pass@tcp(127.0.0.1:3306)/stdk_db?parseTime=true"
+  }
+}
