@@ -3,12 +3,10 @@ package main
 import (
 	"database/sql"
 
-	"github.com/Kale-Grabovski/stdk/src/service"
-
-	"github.com/Kale-Grabovski/stdk/src/controller/version"
-
 	"github.com/Kale-Grabovski/stdk/src/controller/module"
+	"github.com/Kale-Grabovski/stdk/src/controller/version"
 	"github.com/Kale-Grabovski/stdk/src/repository"
+	"github.com/Kale-Grabovski/stdk/src/service"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/sarulabs/di"
