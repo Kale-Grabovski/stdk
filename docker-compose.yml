@@ -1,0 +1,30 @@
+version: '3.4'
+
+networks:
+    lan:
+
+services:
+    db:
+        image: postgres:latest
+        ports:
+            - "5433:5432"
+        volumes:
+            - ./dump.sql:/docker-entrypoint-initdb.d/init.sql
+        environment:
+            LC_ALL: C.UTF-8
+            POSTGRES_USER: postgres
+            POSTGRES_DB: stdk
+            POSTGRES_PASSWORD: postgres_pass
+
+    go:
+        image: golang:1.11
+        working_dir: /app
+        command: ["./crm", ".bin/config.json"]
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/app
+        depends_on:
+            - db
+        links:
+            - db

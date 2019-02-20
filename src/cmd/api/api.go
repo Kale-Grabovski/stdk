@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"os"
 
 	"github.com/Kale-Grabovski/stdk/src/controller/api"
 	"github.com/Kale-Grabovski/stdk/src/repository"
@@ -13,7 +14,12 @@ import (
 )
 
 func main() {
-	viper.SetConfigFile(".bin/config.json")
+	if len(os.Args) < 2 {
+		panic("You must pass correct config path as a parameter")
+		return
+	}
+
+	viper.SetConfigFile(os.Args[1])
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic("Error occurred while reading config file, run: cp .bin/config.dist.json .bin/config.json\n")

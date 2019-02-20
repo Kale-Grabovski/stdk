@@ -2,20 +2,26 @@ package main
 
 import (
 	"database/sql"
+	"os"
 
 	"github.com/Kale-Grabovski/stdk/src/controller/module"
 	"github.com/Kale-Grabovski/stdk/src/controller/version"
 	"github.com/Kale-Grabovski/stdk/src/repository"
 	"github.com/Kale-Grabovski/stdk/src/service"
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"github.com/sarulabs/di"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 func main() {
-	viper.SetConfigFile(".bin/config.json")
+	if len(os.Args) < 2 {
+		panic("You must pass correct config path as a parameter")
+		return
+	}
+
+	viper.SetConfigFile(os.Args[1])
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic("Error occurred while reading config file, run: cp .bin/config.dist.json .bin/config.json\n")
