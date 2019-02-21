@@ -1,14 +1,25 @@
-# stdk API
+# Stfk
 
-CRM is on 80 port, API on 8081, host http://178.128.37.226
+Initializing: `cp .bin/config.dist.json .bin/config.json && make`
 
-Difference of versions:
+Run: `docker-compose up`
+
+Open CRM:
+
+`http://localhost:8080`
+
+API - Difference of versions:
 
 ```
-curl http://178.128.37.226:8081/api/v1/modules -X POST -d '{"installedModules": [{"id": "proxy", "version": 3}, {"id": "ads", "version": 1}], "deviceId": "fojew"}' -v --header "Content-Type: application/json"
+curl http://localhost:8081/api/v1/modules -X POST -d '{"installedModules": [{"id": "proxy", "version": 3}, {"id": "ads", "version": 1}], "deviceId": "fojew"}' -v --header "Content-Type: application/json"
 ```
 
-Getting binary by module name:
+API - Getting binary by module name:
 
-`http://178.128.37.226:8081/api/v1/modules/ads`
+`http://localhost:8081/api/v1/modules/ads`
 
+## Optionally
+
+Run watcher to rebuild go container on any change to *.go files:
+
+`watchexec --restart --exts go --watch . "make build && docker-compose restart crm && docker-compose restart api"`

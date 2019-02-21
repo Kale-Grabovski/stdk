@@ -23,7 +23,7 @@ func NewVersionRepository(db domain.Storage) VersionRepositoryInterface {
 
 func (r *VersionRepository) GetById(id int) (*domain.Version, error) {
 	v := &domain.Version{}
-	query := `SELECT id, is_active, module_id FROM module_version WHERE id = ?`
+	query := `SELECT id, is_active, module_id FROM module_version WHERE id = $1`
 	err := r.db.QueryRow(query, id).Scan(&v.Id, &v.IsActive, &v.ModuleId)
 	if err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (r *VersionRepository) Get(moduleId int) (versions []domain.Version, err er
 	query := `
 		SELECT id, is_active, settings, created_at
 		FROM module_version
-		WHERE module_id = ?
+		WHERE module_id = $1
 		ORDER BY id DESC
 	`
 	rows, err := r.db.Query(query, moduleId)
@@ -62,7 +62,7 @@ func (r *VersionRepository) Get(moduleId int) (versions []domain.Version, err er
 }
 
 func (r *VersionRepository) Create(v *domain.Version) error {
-	query := `INSERT INTO module_version (module_id, filename, filehash, settings) VALUES (?, ?, ?, ?)`
+	query := `INSERT INTO module_version (module_id, filename, filehash, settings) VALUES ($1, $2, $3, $4)`
 	_, err := r.db.Exec(query, v.ModuleId, v.Filename, v.Hash, v.Settings)
 	return err
 }
@@ -73,7 +73,11 @@ func (r *VersionRepository) SetActive(id int) error {
 		return err
 	}
 
-	query := `UPDATE module_version SET is_active = IF(id = ?, true, false) WHERE module_id = ?`
+	query := `
+		UPDATE module_version
+		SET is_active = (CASE WHEN id = $1 THEN true ELSE false END)
+		WHERE module_id = $2
+	`
 	_, err = r.db.Exec(query, id, version.ModuleId)
 	return err
 }
@@ -116,7 +120,7 @@ func (r *VersionRepository) GetActiveVersionByModule(moduleName string) (*domain
 		SELECT v.filehash, v.filename
 		FROM module_version AS v
 		JOIN module AS m ON v.module_id = m.id
-		WHERE m.name = ? AND v.is_active = true
+		WHERE m.name = $1 AND v.is_active = true
 	`
 	err := r.db.QueryRow(query, moduleName).Scan(&v.Hash, &v.Filename)
 	if err != nil {

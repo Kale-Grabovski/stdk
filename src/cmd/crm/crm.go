@@ -24,7 +24,7 @@ func main() {
 	viper.SetConfigFile(os.Args[1])
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic("Error occurred while reading config file, run: cp .bin/config.dist.json .bin/config.json\n")
+		panic("Error occurred while reading config file\n")
 	}
 
 	r := gin.Default()

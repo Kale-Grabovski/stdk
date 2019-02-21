@@ -1,8 +1,5 @@
 version: '3.4'
 
-networks:
-    lan:
-
 services:
     db:
         image: postgres:latest
@@ -16,15 +13,24 @@ services:
             POSTGRES_DB: stdk
             POSTGRES_PASSWORD: postgres_pass
 
-    go:
+    crm:
         image: golang:1.11
         working_dir: /app
-        command: ["./crm", ".bin/config.json"]
+        command: ["./.bin/crm", ".bin/config.json"]
         ports:
             - "8080:8080"
         volumes:
             - .:/app
-        depends_on:
+        links:
             - db
+
+    api:
+        image: golang:1.11
+        working_dir: /app
+        command: ["./.bin/api", ".bin/config.json"]
+        ports:
+            - "8081:8081"
+        volumes:
+            - .:/app
         links:
             - db

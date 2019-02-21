@@ -54,7 +54,7 @@ func (r *ModuleRepository) Get() (modules []domain.Module, err error) {
 }
 
 func (r *ModuleRepository) Create(name string) error {
-	query := `INSERT INTO module (name) VALUES (?)`
+	query := `INSERT INTO module (name) VALUES ($1)`
 	_, err := r.db.Exec(query, name)
 	return err
 }

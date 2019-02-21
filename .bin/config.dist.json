@@ -1,6 +1,6 @@
 {
   "db": {
     "driver": "postgres",
-    "dsn": "postgres://postgres:postgres_pass@localhost:5432/stdk?sslmode=disable"
+    "dsn": "postgres://postgres:postgres_pass@db:5432/stdk?sslmode=disable"
   }
 }

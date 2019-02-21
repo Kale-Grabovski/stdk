@@ -7,7 +7,7 @@ import (
 	"github.com/Kale-Grabovski/stdk/src/controller/api"
 	"github.com/Kale-Grabovski/stdk/src/repository"
 	"github.com/gin-gonic/gin"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"github.com/sarulabs/di"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
@@ -22,7 +22,7 @@ func main() {
 	viper.SetConfigFile(os.Args[1])
 	err := viper.ReadInConfig()
 	if err != nil {
-		panic("Error occurred while reading config file, run: cp .bin/config.dist.json .bin/config.json\n")
+		panic("Error occurred while reading config file\n")
 	}
 
 	r := gin.Default()
